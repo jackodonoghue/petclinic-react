@@ -3,7 +3,7 @@ import './css/petclinic.css';
 import React from 'react';
 import Amplify, { API } from 'aws-amplify';
 
-const myInit = { 
+const myInit = {
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "*",
@@ -15,7 +15,7 @@ Amplify.configure({
     endpoints: [
       {
         name: "VetsMicroserviceAPI",
-        endpoint: "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com/dev",
+        endpoint: "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com/tst",
         region: 'eu-west-1'
       }
     ]
@@ -23,37 +23,36 @@ Amplify.configure({
 });
 
 class Table extends React.Component {
+
   constructor(props) {
-    super(props)
-    const data = API.get('VetsMicroserviceAPI', '/vets', myInit)
+    super(props);
     this.state = {
-      students: data
+      data: [],
     }
   }
 
-  renderTableHeader() {
-    console.log(typeof (this.state.students[0]))
-    let header = Object.keys(this.state.students[0])
-    return header.map((key, index) => {
-      if (key !== 'id') {
-        return <th key={index}>{key.toUpperCase()}</th>
+  componentDidMount() {
+    API.get('VetsMicroserviceAPI', '/vets', myInit).then((response) => {
+      let data = [];
+      console.log("res" + response)
+      for (let item in response) {
+        data.push(response[item]);
       }
+      this.setState({ data });
     })
   }
 
   renderTableData() {
-    console.log(this.state.students);
-    return this.state.students.map((student, index) => {
-      console.log(student)
-      const { id, Name, Speciality } = student //destructuring
-      console.log(Name)
+    return this.state.data.map(function (item) {
+      const { id, Name, Speciality } = item //destructuring
       return (
         <tr key={id}>
           <td><span>{Name}</span></td>
           <td><span>{Speciality}</span></td>
         </tr>
       )
-    })
+
+    });
   }
 
   render() {
@@ -102,7 +101,6 @@ class Table extends React.Component {
                       <span>Error</span>
                     </a>
                   </li>
-
                 </ul>
               </div>
             </div>
@@ -111,16 +109,17 @@ class Table extends React.Component {
             <div className="container xd-container">
               <h1 id='title'>Veterinarians</h1>
               <table id='vets' className="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Specialties</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Specialties</th>
-                    </tr>
-                  </thead>
+                  {this.renderTableData()}
                 </tbody>
               </table>
-
               <br />
               <br />
               <div className="container">
@@ -139,6 +138,5 @@ class Table extends React.Component {
 }
 
 
-//{this.renderTableData()}
 
 export default Table;
