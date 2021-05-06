@@ -8,7 +8,8 @@ Amplify.configure({
     endpoints: [
       {
         name: "VetsMicroserviceAPI",
-        endpoint: "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com"
+        endpoint: "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com/dev",
+        region: 'eu-west-1'
       }
     ]
   }
@@ -17,7 +18,7 @@ Amplify.configure({
 class Table extends React.Component {
   constructor(props) {
     super(props)
-    const data = API.get('', 'dev/vets')
+    const data = API.get('VetsMicroserviceAPI', '/vets')
     this.state = {
       students: data
     }
