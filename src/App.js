@@ -14,14 +14,12 @@ Amplify.configure({
   }
 });
 
-
-
-
 class Table extends React.Component {
   constructor(props) {
     super(props)
+    const data = API.get('', '/vets')
     this.state = {
-      students: await API.get('', '/vets')
+      students: data
     }
   }
 
