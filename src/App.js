@@ -3,6 +3,13 @@ import './css/petclinic.css';
 import React from 'react';
 import Amplify, { API } from 'aws-amplify';
 
+const myInit = { 
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+  }
+};
+
 Amplify.configure({
   API: {
     endpoints: [
@@ -18,7 +25,7 @@ Amplify.configure({
 class Table extends React.Component {
   constructor(props) {
     super(props)
-    const data = API.get('VetsMicroserviceAPI', '/vets')
+    const data = API.get('VetsMicroserviceAPI', '/vets', myInit)
     this.state = {
       students: data
     }
@@ -111,7 +118,6 @@ class Table extends React.Component {
                       <th>Specialties</th>
                     </tr>
                   </thead>
-                  {this.renderTableData()}
                 </tbody>
               </table>
 
@@ -131,5 +137,8 @@ class Table extends React.Component {
     )
   }
 }
+
+
+//{this.renderTableData()}
 
 export default Table;

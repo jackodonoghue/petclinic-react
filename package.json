@@ -1,7 +1,8 @@
 {
-  "name": "test",
+  "name": "petclinic-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
