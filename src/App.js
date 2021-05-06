@@ -1,40 +1,27 @@
 import pivotal from './images/spring-pivotal-logo.png';
 import './css/petclinic.css';
 import React from 'react';
-//import ReactDOM from 'react-dom';
+import Amplify, { API } from 'aws-amplify';
+
+Amplify.configure({
+  API: {
+    endpoints: [
+      {
+        name: "VetsMicroserviceAPI",
+        endpoint: "https://prfia0cqtf.execute-api.eu-west-1.amazonaws.com/dev"
+      }
+    ]
+  }
+});
+
+
 
 
 class Table extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      students: [
-        {
-          id: 0,
-          Name: "Linda Douglas",
-          Speciality: "dentistry"
-        },
-        {
-          id: 1,
-          Name: "Helen Leary",
-          Speciality: "radiology"
-        },
-        {
-          id: 2,
-          Name: "Henry Stevens",
-          Speciality: "radiology"
-        },
-        {
-          id: 3,
-          Name: "Linda Douglas",
-          Speciality: "surgery"
-        },
-        {
-          id: 4,
-          Name: "Rafael Ortega",
-          Speciality: "surgery"
-        }
-      ]
+      students: await API.get('', '/vets')
     }
   }
 
@@ -49,6 +36,7 @@ class Table extends React.Component {
   }
 
   renderTableData() {
+    console.log(this.state.students);
     return this.state.students.map((student, index) => {
       console.log(student)
       const { id, Name, Speciality } = student //destructuring
@@ -66,80 +54,80 @@ class Table extends React.Component {
     return (
       <div>
 
-<div>
-  <nav className="navbar navbar-default" role="navigation">
-    <div className="container">
-      <div className="navbar-header">
-        <a className="navbar-brand" href="/"><span></span></a>
-        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-          <span className="sr-only">
-          </span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-        </button>
-      </div>
-      <div className="navbar-collapse collapse" id="main-navbar">
-        <ul className="nav navbar-nav navbar-right">
-          <li >
-            <a href='/'>
-            <span className="glyphicon glyphicon-home" aria-hidden="true"></span>
-            <span>Home</span>
-            </a>
-          </li>
+        <div>
+          <nav className="navbar navbar-default" role="navigation">
+            <div className="container">
+              <div className="navbar-header">
+                <a className="navbar-brand" href="/"><span></span></a>
+                <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                  <span className="sr-only">
+                  </span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+              </div>
+              <div className="navbar-collapse collapse" id="main-navbar">
+                <ul className="nav navbar-nav navbar-right">
+                  <li >
+                    <a href='/'>
+                      <span className="glyphicon glyphicon-home" aria-hidden="true"></span>
+                      <span>Home</span>
+                    </a>
+                  </li>
 
-          <li>
-            <a href='/owners/find'>
-            <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
-            <span>Find owners</span>
-            </a>
-          </li>
+                  <li>
+                    <a href='/owners/find'>
+                      <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      <span>Find owners</span>
+                    </a>
+                  </li>
 
-          <li>
-            <a href='/vets.html'>
-            <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-            <span>Veterinarians</span>
-            </a>
-          </li>
+                  <li>
+                    <a href='/vets.html'>
+                      <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                      <span>Veterinarians</span>
+                    </a>
+                  </li>
 
-          <li>
-            <a href='/oups'>
-            <span className="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            <span>Error</span>
-            </a>
-          </li>
+                  <li>
+                    <a href='/oups'>
+                      <span className="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                      <span>Error</span>
+                    </a>
+                  </li>
 
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div className="container-fluid">
-    <div className="container xd-container">
-      <h1 id='title'>Veterinarians</h1>
-      <table id='vets' className="table table-striped">
-        <tbody>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Specialties</th>
-            </tr>
-          </thead>
-          {this.renderTableData()}
-        </tbody>
-      </table>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <div className="container-fluid">
+            <div className="container xd-container">
+              <h1 id='title'>Veterinarians</h1>
+              <table id='vets' className="table table-striped">
+                <tbody>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Specialties</th>
+                    </tr>
+                  </thead>
+                  {this.renderTableData()}
+                </tbody>
+              </table>
 
-      <br />
-      <br />
-      <div className="container">
-        <div className="row">
-          <div className="col-12 text-center">
-            <img src={pivotal} alt="Sponsored by Pivotal" />
+              <br />
+              <br />
+              <div className="container">
+                <div className="row">
+                  <div className="col-12 text-center">
+                    <img src={pivotal} alt="Sponsored by Pivotal" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
       </div>
     )
   }
